@@ -1,4 +1,14 @@
 class CatsController < ApplicationController
+  before_action :cat_owner?(@cat), only:[:edit, :update]
+
+  def cat_owner?(@cat)
+    if current_user.cats.include?(@cat)
+      return true
+    else
+      redirect_to cats_url
+    end
+  end
+
   def index
     @cats = Cat.all
     render :index
